@@ -20,9 +20,9 @@ int main()
 
     // Define submenu items
     const char *submenu_items[NUM_SUBMENU_ITEMS] = {
-        " radio ClassicFMMP3.m3u",
-        "Submenu Item 2",
-        "Submenu Item 3"
+        "Radio ClassicFMMP3.m3u",
+        "Radio WCPE",
+        "Exit"
     };
 
     // Create a submenu window
@@ -48,12 +48,14 @@ int main()
 
     // Wait for user input
     int ch;
-    while((ch = getch()) != KEY_F(1)) // Exit on F1 key
-    {
-	//system("killall mpg123"); // Stop the audio playback
-        //radio_playing = 0;
+    bool stop_process = false; // Initialize stop flag
 
+while(!stop_process)
+{
+    while((ch = getch()) != KEY_F(1) && ch != 27) // Exit on F1 key or ESC key
+    {
         // Navigate submenu options using arrow keys
+      
         switch(ch)
         {
             case KEY_UP:
@@ -64,12 +66,27 @@ int main()
                 if(highlight < NUM_SUBMENU_ITEMS)
                     highlight++;
                 break;
+
             case '\n':
-                if(highlight == 1) // "Radio 001" option
+                if(highlight == 1) // "Radio ClassicFMMP3.m3u" option
                 {
                     if(radio_playing == 0)
                     {
-			system("mpg123 -q --mono -r 8000 -b 0 -@ http://media-ice.musicradio.com/ClassicFMMP3.m3u &");
+                        system("mpg123 -q --mono -r 8000 -b 0 -@ http://media-ice.musicradio.com/ClassicFMMP3.m3u &");
+                        radio_playing = 1;
+                    }
+                    else
+                    {
+                        system("killall mpg123"); // Stop the audio playback
+                        radio_playing = 0;
+                    }
+
+                }
+		if(highlight ==  2) // "Radio WCPE" option
+                {
+                    if(radio_playing == 0)
+                    {
+                        system("mpg123 -q --mono -r 8000 -b 0 -@ http://www.ibiblio.org/wcpe/wcpe.pls &");
                         radio_playing = 1;
                     }
                     else
@@ -78,27 +95,49 @@ int main()
                         radio_playing = 0;
                     }
                 }
+                if(highlight ==  3) // "Radio WCPE" option
+                {
+                 
+		   if(radio_playing == 0)
+                    {
+                        
+                        radio_playing = 1;
+                    }
+                    else
+                    {
+                        system("killall mpg123"); // Stop the audio playback
+                        radio_playing = 0;
+                    }
+                    	// Clean up
+			delwin(subwin); // Delete the submenu window
+			delwin(menuwin); // Delete the main menu window
+			endwin();
+                }
                 break;
+        
         }
-
-        // Update the submenu highlighting
-        wbkgdset(subwin, COLOR_PAIR(1));
-        for(int i=0; i<NUM_SUBMENU_ITEMS; i++)
-        {
-            mvwprintw(subwin, i+1, 2, submenu_items[i]);
-        }
-        if(highlight <= NUM_SUBMENU_ITEMS)
-        {
-            wattron(subwin, A_REVERSE);
-            mvwprintw(subwin, highlight, 2, submenu_items[highlight-1]);
-            wattroff(subwin, A_REVERSE);
-        }
-        wrefresh(subwin);
-    }
-
-    // Clean up
-    delwin(subwin); // Delete the submenu window
-    delwin(menuwin); // Delete the main menu window
-    endwin();
-    return 0;
+        
+	// Update the submenu highlighting
+	wbkgdset(subwin, COLOR_PAIR(1));
+	for(int i=0; i<NUM_SUBMENU_ITEMS; i++)
+	{
+	mvwprintw(subwin, i+1, 2, submenu_items[i]);
+	}
+	if(highlight <= NUM_SUBMENU_ITEMS)
+	{
+	wattron(subwin, A_REVERSE);
+	mvwprintw(subwin, highlight, 2, submenu_items[highlight-1]);
+	wattroff(subwin, A_REVERSE);
+	}
+	wrefresh(subwin);
+	}
+        system("killall mpg123");
+        stop_process = true; // Set the stop flag
+ 
+	// Clean up
+	delwin(subwin); // Delete the submenu window
+	delwin(menuwin); // Delete the main menu window
+	endwin();
+	return 0;
+	}
 }
