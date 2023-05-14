@@ -66,7 +66,7 @@ mode=custom
 application=/usr/bin/ffmpeg -i https://stationplaylist.com:7104/listen.aac -f s16le -ac 1 -ar 8000 -vol 32 pipe:1
 format=
 
-Close the radio channel by pressing enter key , then you can use F1 key to quit.
+Close the radio channel by pressing enter key , then you can use F1 key or ESC key to quit.
 
 I used ncurses , see [the wikipedia article](https://en.wikipedia.org/wiki/Ncurses) on Fedora 39 Linux Distro.
 
