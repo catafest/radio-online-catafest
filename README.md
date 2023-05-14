@@ -6,7 +6,7 @@ Use arrow keys , enter key and F1 key with ESC for quit.
 
 In this moment has one single online radio channel.
 
-You can add more , I have a list with radio channels online:
+You can add more , I have a list with radio channels:
 
 BBC / dial 222 (BBC Radio - US & World News)
 /usr/bin/mpg123 -q -s --mono -r 8000 -f 8192 -b 0 http://stream.live.vc.bbcmedia.co.uk/bbc_world_service
