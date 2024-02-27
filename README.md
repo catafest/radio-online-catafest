@@ -1,3 +1,5 @@
+# created on Fedora linux with ncurses
+You can find some examples with ncurses on my website https://sites.google.com/view/festila-george-catalin/tutoriale
 # radio-online-catafest
 
 This is a simple radio online .
